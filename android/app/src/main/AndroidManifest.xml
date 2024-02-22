@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.example.firedev">
     <application
-        android:label="firedev"
+        android:label="Sapna_task"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

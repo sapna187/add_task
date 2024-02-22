@@ -22,7 +22,7 @@ class SignupPage extends StatelessWidget {
       if (_passwordController.text != _confirmPasswordController.text) {
         // Passwords do not match, show an error
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Passwords do not match!'),
             backgroundColor: Colors.red,
           ),
@@ -47,7 +47,11 @@ class SignupPage extends StatelessWidget {
         });
 
         // Successfully signed up, show success dialog
-        _showSignupSuccessDialog(context);
+        
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
       }
     } catch (e) {
       // Handle signup failure
@@ -66,8 +70,8 @@ class SignupPage extends StatelessWidget {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Signup Success'),
-          content: Text('Thank you for signing up!'),
+          title: const Text('Signup Success'),
+          content: const Text('Thank you for signing up!'),
           actions: <Widget>[
             TextButton(
               onPressed: () {
@@ -75,7 +79,7 @@ class SignupPage extends StatelessWidget {
                 // Navigate back to the Login Page
                 Navigator.pop(context); // Go back to the previous page
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );
@@ -87,7 +91,15 @@ class SignupPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Signup'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+            )),
+        title: const Text('Signup', style: TextStyle(color: Colors.white)),
         elevation: 0.0,
         centerTitle: true,
         backgroundColor: Colors.blue.shade900,
@@ -105,10 +117,10 @@ class SignupPage extends StatelessWidget {
                   height: 300, // adjust the height as needed
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _nameController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Full Name',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.person),
@@ -117,10 +129,10 @@ class SignupPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.email),
@@ -129,10 +141,10 @@ class SignupPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.lock),
@@ -142,10 +154,10 @@ class SignupPage extends StatelessWidget {
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _confirmPasswordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Confirm Password',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.lock_outline),
@@ -155,14 +167,14 @@ class SignupPage extends StatelessWidget {
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Center(
                 child: Container(
                   width: 150, // Adjust this to set your desired button width
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () => _performSignup(context),
-                    child: Text('Signup'),
+                    child: const Text('Signup'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue.shade900,
                       onPrimary: Colors.white,

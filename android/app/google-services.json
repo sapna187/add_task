@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "214741830219",
-    "project_id": "firedev-64a4e",
-    "storage_bucket": "firedev-64a4e.appspot.com"
+    "project_number": "467279464826",
+    "project_id": "riverpod-78bfb",
+    "storage_bucket": "riverpod-78bfb.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:214741830219:android:16fcf234d5952b4b0a1bce",
+        "mobilesdk_app_id": "1:467279464826:android:98c94981be6aff35a12ec3",
         "android_client_info": {
           "package_name": "com.example.firedev"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "214741830219-9bvthiidqmig7kqo43cov77jln1uhkse.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyC4CzOw1WpiaYgYVEGJrjRYSFw0O4B1nsY"
+          "current_key": "AIzaSyC3oPnnSB6dSvXfQuDvL4Ddch4183BnA3g"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "214741830219-9bvthiidqmig7kqo43cov77jln1uhkse.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

@@ -1,7 +1,9 @@
+// ignore_for_file: unused_element
+
 import 'dart:io';
 
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firedev/NotificationSettingsScreen.dart';
+// import 'package:firedev/NotificationSettingsScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -61,11 +63,11 @@ class _ProfilePageState extends State<ProfilePage> {
       try {
         await user!.updatePassword(newPassword);
         ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text("Password updated successfully!")));
+            const SnackBar(content: Text("Password updated successfully!")));
       } catch (error) {
         print(error);
         ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Error updating password")));
+            .showSnackBar(const SnackBar(content: Text("Error updating password")));
       }
     }
   }
@@ -80,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
             borderRadius: BorderRadius.circular(12.0),
           ),
           backgroundColor: Colors.white,
-          title: Text(
+          title: const Text(
             'Enter New Password',
             style: TextStyle(color: Colors.blueAccent),
           ),
@@ -89,11 +91,11 @@ class _ProfilePageState extends State<ProfilePage> {
               newPassword = value;
             },
             obscureText: true,
-            style: TextStyle(color: Colors.black),
+            style: const TextStyle(color: Colors.black),
             cursorColor: Colors.blue.shade900,
             decoration: InputDecoration(
               hintText: "Enter new password",
-              hintStyle: TextStyle(color: Colors.grey),
+              hintStyle: const TextStyle(color: Colors.grey),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.blue.shade900),
               ),
@@ -113,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
             TextButton(
-              child: Text(
+              child: const Text(
                 'Change',
                 style: TextStyle(color: Colors.blueAccent),
               ),
@@ -127,18 +129,18 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _notifications() {
-    // Navigate to the notifications settings screen
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => NotificationSettingsScreen()));
-  }
+  // void _notifications() {
+  //   // Navigate to the notifications settings screen
+  //   Navigator.push(context,
+  //       MaterialPageRoute(builder: (context) => NotificationSettingsScreen()));
+  // }
 
   void _appearance() {
     showDialog(
         context: context,
         builder: (context) {
           return SimpleDialog(
-            title: Text('Select Theme'),
+            title: const Text('Select Theme'),
             children: [
               SimpleDialogOption(
                 onPressed: () {
@@ -147,7 +149,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   // Set the theme mode in your app state here
                   Navigator.pop(context);
                 },
-                child: Text('Dark Mode'),
+                child: const Text('Dark Mode'),
               ),
               SimpleDialogOption(
                 onPressed: () {
@@ -156,7 +158,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   // Set the theme mode in your app state here
                   Navigator.pop(context);
                 },
-                child: Text('Light Mode'),
+                child: const Text('Light Mode'),
               ),
             ],
           );
@@ -197,15 +199,15 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue.shade900,
-        title: Text('Profile'),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.blue.shade900,
+      //   title: Text('Profile'),
+      //   centerTitle: true,
+      //   leading: IconButton(
+      //     icon: Icon(Icons.arrow_back),
+      //     onPressed: () => Navigator.pop(context),
+      //   ),
+      // ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -224,9 +226,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       backgroundImage: NetworkImage(
-                          'https://m.media-amazon.com/images/M/MV5BNzcxZGNmNzQtMDljZi00ZDdkLTg5MTAtNDYwNzY3ZWM1ZjQ2XkEyXkFqcGdeQXVyMTExNDQ2MTI@._V1_FMjpg_UX1000_.jpg'),
+                          'https://img.freepik.com/premium-photo/portrait-beautiful-korean-women-park_825367-1376.jpg?w=360'),
                       radius: 70,
                       backgroundColor: Colors.transparent,
                     ),
@@ -236,7 +238,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: GestureDetector(
                         onTap:
                             _uploadImage, // <-- Call your uploadImage function here
-                        child: CircleAvatar(
+                        child: const CircleAvatar(
                           child:
                               Icon(Icons.camera, color: Colors.white, size: 30),
                           backgroundColor:
@@ -249,7 +251,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 50),
             Card(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
@@ -260,39 +262,40 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   children: [
                     _profileInfoRow(Icons.person, "Name: $userName"),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     _profileInfoRow(Icons.email, "Email: $userEmail"),
+                    
                   ],
                 ),
               ),
             ),
-            SizedBox(height: 30),
-            Text('Settings',
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: Colors.white70)),
-            SizedBox(height: 15),
-            Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              elevation: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  children: [
-                    _settingTile(
-                        Icons.security, "Change Password", _changePassword),
-                    Divider(),
-                    _settingTile(Icons.notification_important, "Notifications",
-                        _notifications),
-                    Divider(),
-                    _settingTile(Icons.home, "Appearance", _appearance),
-                  ],
-                ),
-              ),
-            ),
+            // SizedBox(height: 30),
+            // Text('Settings',
+            //     style: TextStyle(
+            //         fontWeight: FontWeight.bold,
+            //         fontSize: 24,
+            //         color: Colors.white70)),
+            // SizedBox(height: 15),
+            // Card(
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(15.0),
+            //   ),
+            //   elevation: 5,
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(16.0),
+            //     child: Column(
+            //       children: [
+            //         _settingTile(
+            //             Icons.security, "Change Password", _changePassword),
+            //         Divider(),
+            //         _settingTile(Icons.notification_important, "Notifications",
+            //             _notifications),
+            //         Divider(),
+            //         _settingTile(Icons.home, "Appearance", _appearance),
+            //       ],
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),
@@ -302,15 +305,15 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _profileInfoRow(IconData icon, String text) {
     return ListTile(
       leading: Icon(icon),
-      title: Text(text, style: TextStyle(fontSize: 20)),
+      title: Text(text, style: const TextStyle(fontSize: 20)),
     );
   }
 
-  Widget _settingTile(IconData icon, String text, void Function() onTap) {
-    return ListTile(
-      leading: Icon(icon),
-      title: Text(text, style: TextStyle(fontSize: 20)),
-      onTap: onTap,
-    );
-  }
+  // Widget _settingTile(IconData icon, String text, void Function() onTap) {
+  //   return ListTile(
+  //     leading: Icon(icon),
+  //     title: Text(text, style: TextStyle(fontSize: 20)),
+  //     onTap: onTap,
+  //   );
+  // }
 }

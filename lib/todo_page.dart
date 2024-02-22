@@ -52,7 +52,18 @@ class _TodoPageState extends State<TodoPage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Todo Page'),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new_rounded,
+              color: Colors.white,
+            )),
+        title: const Text(
+          'Enter Data',
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Colors.blue.shade900,
       ),
       body: Container(
@@ -72,8 +83,8 @@ class _TodoPageState extends State<TodoPage>
                 icon: Icons.subject,
                 child: TextField(
                   controller: _subjectController,
-                  style: TextStyle(color: Colors.black),
-                  decoration: InputDecoration(
+                  style: const TextStyle(color: Colors.black),
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     labelText: 'Subject',
                     labelStyle: TextStyle(color: Colors.black),
@@ -82,13 +93,13 @@ class _TodoPageState extends State<TodoPage>
                   ),
                 ),
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               _buildCard(
                 icon: Icons.priority_high,
                 child: DropdownButtonHideUnderline(
                   child: DropdownButton<String>(
                     dropdownColor: const Color.fromARGB(255, 255, 255, 255),
-                    style: TextStyle(color: Colors.black),
+                    style: const TextStyle(color: Colors.black),
                     value: _priority,
                     items: ['High', 'Medium', 'Low'].map((String value) {
                       return DropdownMenuItem<String>(
@@ -104,14 +115,14 @@ class _TodoPageState extends State<TodoPage>
                   ),
                 ),
               ),
-              SizedBox(height: 12),
+              const SizedBox(height: 12),
               _buildCard(
                 icon: Icons.description,
                 child: TextField(
                   controller: _descriptionController,
-                  style: TextStyle(color: Colors.black),
+                  style: const TextStyle(color: Colors.black),
                   maxLines: 4,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     border: InputBorder.none,
                     labelText: 'Description',
                     labelStyle: TextStyle(color: Colors.black),
@@ -120,19 +131,19 @@ class _TodoPageState extends State<TodoPage>
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 16),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 16),
                   ),
                   onPressed: _addOrUpdateTask,
                   child: Text(
                     widget.editTask == null ? 'Add' : 'Update',
-                    style: TextStyle(fontSize: 16),
+                    style: const TextStyle(fontSize: 16),
                   ),
                 ),
               ),
@@ -155,7 +166,7 @@ class _TodoPageState extends State<TodoPage>
         child: Row(
           children: [
             Icon(icon, color: Colors.purpleAccent, size: 28.0),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Expanded(child: child),
           ],
         ),

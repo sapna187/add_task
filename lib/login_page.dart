@@ -25,7 +25,7 @@ class LoginPage extends StatelessWidget {
       print('Login failed: $e');
       // Show a SnackBar with the error message
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Login failed:Check your email or password'),
           backgroundColor: Colors.red,
         ),
@@ -37,7 +37,10 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        title: const Text(
+          'Login',
+          style: TextStyle(color: Colors.white),
+        ),
         elevation: 0.0,
         centerTitle: true,
         backgroundColor: Colors.blue.shade900,
@@ -56,10 +59,10 @@ class LoginPage extends StatelessWidget {
                   height: 300, // adjust the height as needed
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _emailController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Email',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.email),
@@ -68,10 +71,10 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'Password',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.lock),
@@ -81,14 +84,14 @@ class LoginPage extends StatelessWidget {
                 ),
                 obscureText: true,
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Center(
                 child: Container(
                   width: 150, // Adjust this to set your desired button width
                   height: 50,
                   child: ElevatedButton(
                     onPressed: () => _performLogin(context),
-                    child: Text('Login'),
+                    child: const Text('Login'),
                     style: ElevatedButton.styleFrom(
                       primary: Colors.blue.shade900,
                       onPrimary: Colors.white,
@@ -99,11 +102,11 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't have an account?"),
+                  const Text("Don't have an account?"),
                   TextButton(
                     onPressed: () {
                       Navigator.push(

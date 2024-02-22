@@ -7,7 +7,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'login_page.dart';
 import 'todo_page.dart';
-// import 'dart:ui_web';
 
 final firebaseApp = Firebase.app();
 final rtdb = FirebaseDatabase.instanceFor(
@@ -23,6 +22,7 @@ class _HomePageState extends State<HomePage> {
   final User? user = FirebaseAuth.instance.currentUser;
   DatabaseReference databaseReference = rtdb.ref();
   List<Map<dynamic, dynamic>> tasks = [];
+  int _currentIndex = 0; // Added to keep track of the selected tab index
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
               .map((entry) => {"id": entry.key, ...entry.value})
               .toList();
         } else {
-          tasks = []; // Clear the tasks list when there's no data in Firebase.
+          tasks = [];
         }
         setState(() {});
       });
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
           .remove()
           .then((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Task deleted!')),
+          const SnackBar(content: Text('Task deleted!')),
         );
       });
     }
@@ -76,42 +76,33 @@ class _HomePageState extends State<HomePage> {
           .remove()
           .then((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Task deleted!')),
+          const SnackBar(content: Text('Task deleted!')),
         );
       });
     }
   }
 
-  _confirmDeleteAll() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text('Delete All Tasks'),
-        content: Text('Are you sure you want to delete all tasks?'),
-        actions: <Widget>[
-          TextButton(
-            child: Text('Cancel'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          TextButton(
-            child: Text('Delete', style: TextStyle(color: Colors.red)),
-            onPressed: () {
-              _deleteAllTasks();
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      ),
-    );
-  }
 
   _performLogout(BuildContext context) async {
     await FirebaseAuth.instance.signOut();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Logged out successfully!')),
+      const SnackBar(content: Text('Logged out successfully!')),
     );
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
+
+  void _onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
+
+  void _navigateToAddTaskPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TodoPage()),
+    );
   }
 
   @override
@@ -119,136 +110,143 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.blueGrey[50],
       appBar: AppBar(
-        title: Text('Tasks'),
+        automaticallyImplyLeading: false,
+        title: Text(
+          _currentIndex == 0 ? 'Dashboard' : 'Profile',
+          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w400),
+        ),
         backgroundColor: Colors.blue.shade900,
         actions: [
-          IconButton(
-            icon: Icon(Icons.person),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ProfilePage(user: user),
-                ),
-              );
-            },
-          ),
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () => _performLogout(context),
-          ),
+          if (_currentIndex == 1)
+          
+            IconButton(
+              icon: const Icon(
+                Icons.logout,
+                color: Colors.white,
+              ),
+              onPressed: () => _performLogout(context),
+            ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) => Card(
-            elevation: 5,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-            margin: EdgeInsets.symmetric(vertical: 10),
-            child: ListTile(
-              contentPadding: EdgeInsets.all(15),
-              title: Text(
-                tasks[index]['subject'],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              subtitle: Text(
-                'Priority: ${tasks[index]['priority']}',
-                style: TextStyle(
-                  color: tasks[index]['priority'] == 'high'
-                      ? Colors.red
-                      : tasks[index]['priority'] == 'medium'
-                          ? Colors.orange
-                          : Colors.green,
-                  fontSize: 14,
-                ),
-              ),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.edit, color: Colors.deepPurple),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              TodoPage(editTask: tasks[index]),
+      body: _currentIndex == 0
+          ? tasks.isEmpty
+              ? const Center(
+                  child: Text(
+                    'No data added yet',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              : Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                  child: ListView.builder(
+                    itemCount: tasks.length,
+                    itemBuilder: (context, index) => Card(
+                      elevation: 5,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(15),
+                        title: Text(
+                          tasks[index]['subject'],
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
                         ),
-                      );
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.delete, color: Colors.redAccent),
-                    onPressed: () {
-                      _deleteTask(tasks[index]['id']);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Task deleted!')),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        color: Colors.blue.shade900,
-        shape: CircularNotchedRectangle(),
-        child: Container(
-          height: 60.0,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.add, color: Colors.white),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => TodoPage()),
-                      );
-                    },
-                  ),
-                  Text(
-                    'Add Task',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
+                        subtitle: Text(
+                          'Priority: ${tasks[index]['priority']}',
+                          style: TextStyle(
+                            color: tasks[index]['priority'] == 'high'
+                                ? Colors.red
+                                : tasks[index]['priority'] == 'medium'
+                                    ? Colors.orange
+                                    : Colors.green,
+                            fontSize: 14,
+                          ),
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            IconButton(
+                              icon: const Icon(Icons.edit, color: Colors.deepPurple),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        TodoPage(editTask: tasks[index]),
+                                  ),
+                                );
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.delete, color: Colors.redAccent),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text("Confirm Delete"),
+                                      content: const Text(
+                                          "Are you sure you want to delete this task?"),
+                                      actions: <Widget>[
+                                        TextButton(
+                                          child: const Text("Cancel"),
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                        TextButton(
+                                          child: const Text("Delete"),
+                                          onPressed: () {
+                                            _deleteTask(tasks[index]['id']);
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content:
+                                                      Text('Task deleted!')),
+                                            );
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  )
-                ],
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  IconButton(
-                    icon: Icon(Icons.delete_forever, color: Colors.white),
-                    onPressed: _confirmDeleteAll,
                   ),
-                  Text(
-                    'Delete All',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16.0,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  )
-                ],
-              ),
-            ],
+                )
+          : ProfilePage(user: user),
+      floatingActionButton: _currentIndex == 0
+          ? FloatingActionButton(
+              onPressed: _navigateToAddTaskPage,
+              child: const Icon(Icons.add),
+            )
+          : null,
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: _onTabTapped,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-        ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }
